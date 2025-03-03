@@ -1,0 +1,13 @@
+# Node modules
+node_modules/
+
+# Environment variables file
+.env
+
+# Log files
+*.log
+
+# Optional: You can ignore IDE/editor files (if you want)
+.vscode/
+.idea/
+.DS_Store
