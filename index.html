@@ -30,8 +30,10 @@
 	</div>
 	<div id="messages"></div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+
 <script>
-	var socket = io();
+	var socket = io("https://chat-app-78ko.onrender.com");
 	$(() => {
 		$("#send").click(() => {
 			var message = {name: $("#name").val(), message: $("#message").val()};

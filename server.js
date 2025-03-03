@@ -1,9 +1,10 @@
 require("dotenv").config();
+const API_URL = "https://chat-app-78ko.onrender.com";
 
 var express = require("express");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
-
+const cors = require("cors");
 var app = express();
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
@@ -11,7 +12,13 @@ var io = require("socket.io")(http);
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+const corsOptions = {
+	origin: "https://oanagrecu.github.io/Chat-app/",
+	methods: "GET,POST", // Allow specific methods if needed
+	allowedHeaders: "Content-Type",
+};
 
+app.use(cors(corsOptions));
 const MONGO_URI = process.env.MONGO_URI;
 
 var Message = mongoose.model("Message", {
