@@ -48,11 +48,11 @@
 	}
 
 	function getMessages() {
-		$.get("http://localhost:3000/messages", (data) => {
+		$.get("https://oanagrecu.github.io/Chat-app/messages", (data) => {
 			data.forEach(addMessages);
 		});
 	}
 	function postMessages(message) {
-		$.post("http://localhost:3000/messages", message);
+		$.post("https://oanagrecu.github.io/Chat-app/messages", message);
 	}
 </script>
