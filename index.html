@@ -33,7 +33,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
 
 <script>
-	var socket = io("https://chat-app-78ko.onrender.com");
+	var socket = io("https://chat-app-78ko.onrender.com", {
+		transports: ["websocket", "polling"],
+	});
+
 	$(() => {
 		$("#send").click(() => {
 			var message = {name: $("#name").val(), message: $("#message").val()};
@@ -47,12 +50,11 @@
 		$("#messages").append(`<h4> ${message.name} </h4> <p> ${message.message} </p>`);
 	}
 
-	function getMessages() {
-		$.get("https://oanagrecu.github.io/Chat-app/messages", (data) => {
-			data.forEach(addMessages);
-		});
-	}
+	$.get("https://chat-app-78ko.onrender.com/messages", (data) => {
+		data.forEach(addMessages);
+	});
+
 	function postMessages(message) {
-		$.post("https://oanagrecu.github.io/Chat-app/messages", message);
+		$.post("https://chat-app-78ko.onrender.com/messages", message);
 	}
 </script>

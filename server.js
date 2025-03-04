@@ -1,12 +1,26 @@
 require("dotenv").config();
+
 const API_URL = "https://chat-app-78ko.onrender.com";
 
-var express = require("express");
-var bodyParser = require("body-parser");
-var mongoose = require("mongoose");
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 const cors = require("cors");
-var app = express();
-var http = require("http").Server(app);
+
+const app = express();
+const http = require("http").Server(app);
+
+const corsOptions = {
+	origin: "https://oanagrecu.github.io/Chat-app",
+	methods: ["GET", "POST"],
+	allowedHeaders: ["Content-Type"],
+};
+app.use(cors(corsOptions));
+
+app.use(express.static(__dirname));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+
 const io = require("socket.io")(http, {
 	cors: {
 		origin: "https://oanagrecu.github.io/Chat-app",
@@ -14,19 +28,9 @@ const io = require("socket.io")(http, {
 	},
 });
 
-app.use(express.static(__dirname));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
-const corsOptions = {
-	origin: "https://oanagrecu.github.io/Chat-app",
-	methods: ["GET", "POST"], // Allow specific methods if needed
-	allowedHeaders: ["Content-Type"],
-};
-
-app.use(cors(corsOptions));
 const MONGO_URI = process.env.MONGO_URI;
 
-var Message = mongoose.model("Message", {
+const Message = mongoose.model("Message", {
 	name: String,
 	message: String,
 });
@@ -82,10 +86,11 @@ io.on("connection", (socket) => {
 
 async function connectToDB() {
 	try {
+		console.log("Connecting to:", MONGO_URI);
 		await mongoose.connect(MONGO_URI);
-		console.log("✅ Conectat la MongoDB!");
+		console.log("✅ Connected to MongoDB!");
 	} catch (err) {
-		console.error("❌ Eroare la conectare:", err);
+		console.error("❌ MongoDB Connection Error:", err);
 	}
 }
 
@@ -95,12 +100,3 @@ const PORT = process.env.PORT || 3000;
 var server = http.listen(PORT, () => {
 	console.log("Server is listening on port", PORT);
 });
-
-// async MyFunction(){
-// 	try {
-// let result = await request()
-// console.log(result)
-//  } catch (err) {
-// 		console.log(err)
-// }
-// }
